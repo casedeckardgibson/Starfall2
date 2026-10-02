@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#070b14" />
+  <title>STARFALL — The Legacy of Sam Page</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Orbitron:wght@400;600&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div id="app">
+    <!-- Boot -->
+    <section id="boot-screen" class="screen">
+      <div class="boot-title">STARFALL</div>
+      <div class="boot-bar"><span id="boot-fill"></span></div>
+      <div style="font-family:var(--font-sys);font-size:0.6rem;letter-spacing:0.2em;color:var(--muted)">INITIALIZING SYSTEMS</div>
+    </section>
+
+    <!-- Title -->
+    <section id="title-screen" class="screen hidden">
+      <div class="title-bg"></div>
+      <div class="title-stars"></div>
+      <div class="title-content">
+        <div class="kicker">Helios Freight · Year 2045</div>
+        <h1 class="game-title">STARFALL</h1>
+        <p class="subtitle">The Legacy of Sam Page</p>
+        <div class="title-rule"></div>
+        <p class="title-tag">A moral officer. A conspiracy. A fall that rewrites everything.</p>
+        <div class="title-menu">
+          <button class="menu-btn primary" id="btn-new">New Game</button>
+          <button class="menu-btn" id="btn-continue">Continue</button>
+          <button class="menu-btn" id="btn-load-title">Load</button>
+          <button class="menu-btn" id="btn-chapters-title">Chapters</button>
+          <button class="menu-btn" id="btn-settings-title">Settings</button>
+          <button class="menu-btn" id="btn-codex-title">Codex</button>
+        </div>
+        <p class="mature-note">Mature themes · Romance · Violence · Moral choice</p>
+      </div>
+    </section>
+
+    
+    <!-- Solar map hub -->
+    <section id="map-screen" class="screen hidden">
+      <div class="map-shell">
+        <header class="map-header">
+          <div>
+            <div class="map-kicker">True Purpose · Navigation</div>
+            <h2 id="map-region-label">K-Belt</h2>
+          </div>
+          <div class="map-resources" id="map-resources"></div>
+          <button type="button" class="menu-btn" id="btn-map-close">Bridge</button>
+        </header>
+        <div class="map-body">
+          <div class="map-chart" id="map-chart"></div>
+          <aside class="map-panel" id="map-panel">
+            <div class="map-panel-empty">Select a mission marker.</div>
+          </aside>
+        </div>
+        <footer class="map-footer">
+          <div id="map-region-tabs"></div>
+          <p class="map-hint">Clear 3/4 belt missions to unlock Mars (needs ships, credits, loyalty). Clear 5/6 Mars to unlock Earth.</p>
+        </footer>
+      </div>
+    </section>
+
+    <!-- Game -->
+    <section id="game-screen" class="screen hidden">
+      <div id="stage">
+        <div class="bg-layer" id="bg-a"></div>
+        <div class="bg-layer" id="bg-b"></div>
+        <div id="particles"></div>
+        <div id="chars">
+          <div class="slot left" id="slot-left"><img alt="" /></div>
+          <div class="slot center" id="slot-center"><img alt="" /></div>
+          <div class="slot right" id="slot-right"><img alt="" /></div>
+        </div>
+        <div id="fx-alert"></div>
+        <div id="fx-vignette"></div>
+        <div id="letterbox"></div>
+        <div id="flash-white"></div>
+        <div id="fade-black"></div>
+        <div id="cg-layer" class="hidden" aria-hidden="true">
+          <img id="cg-image" alt="" />
+        </div>
+        <div id="fx-zoom"></div>
+        <div id="fx-pulse"></div>
+        <div id="fx-blur"></div>
+
+        <div id="hud">
+          <div id="location-tag">—</div>
+          <div id="hud-controls">
+            <button class="hud-btn" id="btn-back" title="Previous line">Back</button>
+            <button class="hud-btn" id="btn-stats" title="Stats">Stats</button>
+            <button class="hud-btn" id="btn-log" title="Log">Log</button>
+            <button class="hud-btn" id="btn-auto" title="Auto">Auto</button>
+            <button class="hud-btn" id="btn-skip" title="Skip to choice">Skip</button>
+            <button class="hud-btn" id="btn-save" title="Save">Save</button>
+            <button class="hud-btn" id="btn-load" title="Load">Load</button>
+            <button class="hud-btn" id="btn-menu" title="Menu">Menu</button>
+          </div>
+        </div>
+
+        <div id="containment">
+          <div>CONTAINMENT INTEGRITY</div>
+          <div class="bar"><div class="fill" id="containment-fill"></div></div>
+        </div>
+
+        <div id="stats-flyout">
+          <h3>Status</h3>
+          <div id="stats-body"></div>
+        </div>
+
+        <div id="choices"></div>
+
+        <div id="textbox">
+          <div class="nameplate" id="nameplate">—</div>
+          <div id="dialogue"></div>
+          <div id="continue-hint">▼</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pause menu -->
+    <div id="pause-menu" class="modal-backdrop hidden">
+      <div class="modal" style="text-align:center">
+        <h2>Paused</h2>
+        <div id="pause-stack">
+          <button class="menu-btn" id="btn-resume">Resume</button>
+          <button class="menu-btn" id="btn-save-pause">Save</button>
+          <button class="menu-btn" id="btn-load-pause">Load</button>
+          <button class="menu-btn" id="btn-settings-pause">Settings</button>
+          <button class="menu-btn" id="btn-codex-pause">Codex</button>
+          <button class="menu-btn" id="btn-chapters-pause">Chapters</button>
+          <button class="menu-btn" id="btn-title">Title Screen</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Save / Load -->
+    <div id="saveload-modal" class="modal-backdrop hidden">
+      <div class="modal">
+        <h2 id="saveload-title">Save</h2>
+        <div class="slot-list" id="slot-list"></div>
+        <div class="modal-actions">
+          <button class="menu-btn" id="btn-saveload-close">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Settings -->
+    <div id="settings-modal" class="modal-backdrop hidden">
+      <div class="modal">
+        <h2>Settings</h2>
+        <div class="modal-row">
+          <label for="set-text">Text speed</label>
+          <input type="range" id="set-text" min="8" max="60" />
+        </div>
+        <div class="modal-row">
+          <label for="set-auto">Auto speed</label>
+          <input type="range" id="set-auto" min="0.4" max="2.5" step="0.1" />
+        </div>
+        <div class="modal-row">
+          <label for="set-volume">Volume</label>
+          <input type="range" id="set-volume" min="0" max="100" />
+        </div>
+        <div class="modal-row">
+          <label for="set-opacity">Text box opacity</label>
+          <input type="range" id="set-opacity" min="40" max="95" />
+        </div>
+        <div class="modal-row">
+          <label for="set-font">Font size</label>
+          <input type="range" id="set-font" min="1" max="1.7" step="0.02" />
+        </div>
+        <div class="modal-row">
+          <label for="set-skip">Skip unread</label>
+          <input type="checkbox" id="set-skip" />
+        </div>
+        <div class="modal-actions">
+          <button class="menu-btn" id="btn-settings-close">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Log -->
+    <div id="log-modal" class="modal-backdrop hidden">
+      <div class="modal">
+        <h2>Dialogue Log</h2>
+        <div id="log-list"></div>
+        <div class="modal-actions">
+          <button class="menu-btn" id="btn-log-close">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Codex -->
+    <div id="codex-modal" class="modal-backdrop hidden">
+      <div class="modal" style="width:min(720px,100%)">
+        <h2>Codex</h2>
+        <div class="codex-grid" id="codex-grid"></div>
+        <div class="modal-actions">
+          <button class="menu-btn" id="btn-codex-close">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chapters -->
+    <div id="chapters-modal" class="modal-backdrop hidden">
+      <div class="modal">
+        <h2>Chapters</h2>
+        <div id="chapters-list"></div>
+        <div class="modal-actions">
+          <button class="menu-btn" id="btn-chapters-close">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ending -->
+    <section id="ending-screen" class="screen hidden">
+      <div id="ending-panel">
+        <div id="ending-badge">STARFALL</div>
+        <div id="ending-art-wrap" class="hidden">
+          <img id="ending-art" alt="" />
+        </div>
+        <p id="ending-kicker" class="ending-kicker"></p>
+        <h2 id="ending-title">Ending</h2>
+        <p id="ending-subtitle" class="ending-subtitle"></p>
+        <p class="epigraph" id="ending-epigraph"></p>
+        <p id="ending-body" class="ending-body"></p>
+        <div class="stat-grid" id="ending-stats"></div>
+        <div class="flag-list" id="ending-flags"></div>
+        <button class="menu-btn primary hidden" id="btn-ending-warp">Return to that moment</button>
+        <button class="menu-btn primary" id="btn-ending-title">Return to Title</button>
+      </div>
+    </section>
+  </div>
+
+  <script src="js/data.js"></script>
+  <script src="js/missions.js"></script>
+  <!-- Scene scripts — add more as you write them -->
+  <script src="js/scenes/p1s1a.js"></script>
+  <script src="js/scenes/p1s1b.js"></script>
+  <script src="js/scenes/p1s1c.js"></script>
+  <script src="js/scenes/p1s1d.js"></script>
+  <script src="js/scenes/p1s2a.js"></script>
+  <script src="js/scenes/p1s2b.js"></script>
+  <script src="js/scenes/p1s2c.js"></script>
+  <script src="js/scenes/p1s2d.js"></script>
+  <script src="js/scenes/p1s3a.js"></script>
+  <script src="js/scenes/p1s3b.js"></script>
+  <script src="js/scenes/p1s3c.js"></script>
+  <script src="js/scenes/p1s3d.js"></script>
+  <script src="js/scenes/p1s4a.js"></script>
+  <script src="js/scenes/p1s4b.js"></script>
+  <script src="js/scenes/p1s4c.js"></script>
+  <script src="js/scenes/p1s4d.js"></script>
+  <script src="js/scenes/p1s5a.js"></script>
+  <script src="js/scenes/p1s5b.js"></script>
+  <script src="js/scenes/p1s5c.js"></script>
+  <script src="js/scenes/p1s5d.js"></script>
+  <script src="js/scenes/p2s1a.js"></script>
+  <script src="js/scenes/p2s1b.js"></script>
+  <script src="js/scenes/p2s1c.js"></script>
+  <script src="js/scenes/p2s1d.js"></script>
+  <script src="js/scenes/p2s2a.js"></script>
+  <script src="js/scenes/p2s2b.js"></script>
+  <script src="js/scenes/p2s2c.js"></script>
+  <script src="js/scenes/p2s2d.js"></script>
+  <script src="js/scenes/p2s3a.js"></script>
+  <script src="js/scenes/p2s3b.js"></script>
+  <script src="js/scenes/p2s3c.js"></script>
+  <script src="js/scenes/p2s3d.js"></script>
+  <script src="js/scenes/p2s3e.js"></script>
+  <script src="js/scenes/p3s1a.js"></script>
+  <script src="js/scenes/p3s1b.js"></script>
+  <script src="js/scenes/p3s1c.js"></script>
+  <script src="js/scenes/p3s1d.js"></script>
+  <script src="js/scenes/hub_missions.js"></script>
+  <!-- Engine last: merges STARFALL_SCENES and runs -->
+  <script src="js/script.js"></script>
+</body>
+</html>
